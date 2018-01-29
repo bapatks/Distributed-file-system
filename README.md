@@ -1,0 +1,6 @@
+# Distributed-file-system
+This is FUSE based distributed file system in Linux consisting of one meta server and multiple data servers that store data in the form of blocks. This design is capable of handling data loss by introducing redundancy during data storage, error detection and correction in data with the help of checksum for each block, data retention by using persistent storage and fault tolerant towards multiple data server crashes.
+
+To tackle data loss, the file system introduces redundancy during data storage. Any data that is stored onto the servers have a replication count of 3, that is, same block of data can be found on 3 adjacent servers. The data stored in servers is maintained in persistent storage of the servers. Whenever a server is restarted after being crashed, it will automatically load data from its persistent storage and start serving clients without any data loss. Furthermore, if a persistent storage itself faults/gets erased when the server was down, the file system sets up the server to its original normal state with the data being populated from adjacent servers.
+
+To check for the validity of stored data, a checksum is maintained for each block of data, and when corruption of data is observed by the file system, it automatically corrects the errors by using replicas stored in the servers.
